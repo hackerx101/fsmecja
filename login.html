@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - National Future Stars</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #1e1e2f, #2e2e45);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ff6600;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 8px;
+      background: #f2f2f2;
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 5px #ff6600;
+    }
+
+    .dob-group {
+      position: relative;
+    }
+
+    .calendar-icon {
+      position: absolute;
+      right: 10px;
+      top: 36px;
+      cursor: pointer;
+    }
+
+    .submit-btn, .otp-btn {
+      width: 100%;
+      padding: 14px;
+      background: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover, .otp-btn:hover {
+      background: #e65c00;
+    }
+
+    .footer-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: #ccc;
+    }
+
+    .footer-link a {
+      color: #ff6600;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Player Login</h2>
+    <form action="dashboard.html" method="post">
+      <label for="regNumber">Player Registration Number</label>
+      <input type="text" id="regNumber" name="regNumber" required />
+
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="dobText">Date of Birth (DD/MM/YYYY)</label>
+      <div class="dob-group">
+        <input type="text" id="dobText" name="dobText" maxlength="10" placeholder="DD/MM/YYYY" required />
+        <input type="date" id="dobPicker" style="display:none;" min="2000-01-01" max="2016-12-31"/>
+        <span class="calendar-icon" onclick="document.getElementById('dobPicker').click()">📅</span>
+      </div>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <label for="team">Team Name</label>
+      <select id="team" name="team" required>
+        <option value="">Select Your Team</option>
+        <option value="East All Stars">East All Stars</option>
+        <option value="West Hustle">West Hustle</option>
+        <option value="Southern Swish">Southern Swish</option>
+        <option value="Northern Nets">Northern Nets</option>
+      </select>
+
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
+
+    <button class="otp-btn" onclick="sendOTP()">Send OTP</button>
+
+    <div class="footer-link">
+      Don't have an account? <a href="signup.html">Sign up here</a>
+    </div>
+  </div>
+
+  <script>
+    // Auto-format DOB input as DD/MM/YYYY
+    document.getElementById('dobText').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 3 && value.length <= 4) {
+        value = value.slice(0, 2) + '/' + value.slice(2);
+      } else if (value.length >= 5) {
+        value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4, 8);
+      }
+      e.target.value = value.slice(0, 10);
+    });
+
+    // Sync calendar picker to text field
+    document.getElementById('dobPicker').addEventListener('change', function(e) {
+      const [year, month, day] = e.target.value.split("-");
+      document.getElementById('dobText').value = `${day}/${month}/${year}`;
+    });
+
+    // Dummy OTP function (for now)
+    function sendOTP() {
+      alert("OTP has been sent to your registered contact.");
+    }
+  </script>
+
+</body>
+  </html>
