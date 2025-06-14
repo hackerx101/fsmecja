@@ -118,11 +118,12 @@
 
       <label for="team">Team Name</label>
       <select id="team" name="team" required>
-        <option value="">Select Your Team</option>
-        <option value="East All Stars">East All Stars</option>
-        <option value="West Hustle">West Hustle</option>
-        <option value="Southern Swish">Southern Swish</option>
-        <option value="Northern Nets">Northern Nets</option>
+        <option value="">Select Your Team Campus</option>
+        <option value="East Dallas">East Dallas</option>
+        <option value="West Dallas">West Dallas</option>
+        <option value="Southern St Louis">Southern South Louis</option>
+        <option value="Northern Florida">Northern Florida</option>
+      <option value="North Dalllas">Northern Dallas</option>
       </select>
 
       <button type="submit" class="submit-btn">Login</button>
