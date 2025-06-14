@@ -1,0 +1,224 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSFMEC - Law Enforcement Request Form</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  form {
+    display: grid;
+    gap: 20px;
+  }
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #2980b9;
+  }
+  .signature-pad {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    height: 200px;
+  }
+  .error {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  .file-upload {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Law Enforcement Request Form</h1>
+    <form id="lawEnforcementForm">
+      <div>
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="email">Government Email Address:</label>
+        <input type="email" id="email" name="email" required pattern=".*\.gov$">
+        <span class="error" id="emailError"></span>
+      </div>
+      <div>
+        <label for="agency">Law Enforcement Agency:</label>
+        <input type="text" id="agency" name="agency" required>
+      </div>
+      <div>
+        <label for="badge">Badge Number:</label>
+        <input type="text" id="badge" name="badge" required>
+      </div>
+      <div>
+        <label for="caseNumber">Case Number:</label>
+        <input type="text" id="caseNumber" name="caseNumber" required>
+      </div>
+      <div>
+        <label for="requestType">Type of Request:</label>
+        <select id="requestType" name="requestType" required>
+          <option value="">Select request type</option>
+          <option value="studentRecords">Student Records</option>
+          <option value="financialRecords">Financial Records</option>
+          <option value="employeeRecords">Employee Records</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="requestPurpose">Purpose of Request:</label>
+        <textarea id="requestPurpose" name="requestPurpose" required></textarea>
+      </div>
+      <div>
+        <label for="specificInfo">Specific Information Requested:</label>
+        <textarea id="specificInfo" name="specificInfo" required></textarea>
+      </div>
+      <div>
+        <label for="relevance">Relevance to Investigation:</label>
+        <textarea id="relevance" name="relevance" required></textarea>
+      </div>
+      <div>
+        <label for="urgency">Urgency of Request:</label>
+        <select id="urgency" name="urgency" required>
+          <option value="">Select urgency level</option>
+          <option value="routine">Routine</option>
+          <option value="urgent">Urgent</option>
+          <option value="emergency">Emergency</option>
+        </select>
+      </div>
+      <div>
+        <label for="dateFrom">Date Range - From:</label>
+        <input type="date" id="dateFrom" name="dateFrom" required>
+      </div>
+      <div>
+        <label for="dateTo">Date Range - To:</label>
+        <input type="date" id="dateTo" name="dateTo" required>
+      </div>
+      <div>
+        <label for="legalAuthority">Legal Authority for Request:</label>
+        <textarea id="legalAuthority" name="legalAuthority" required></textarea>
+      </div>
+      <div>
+        <label for="dataHandling">Data Handling and Security Measures:</label>
+        <textarea id="dataHandling" name="dataHandling" required></textarea>
+      </div>
+      <div>
+        <label for="file1" class="file-upload">Upload Warrant or Subpoena:</label>
+        <input type="file" id="file1" name="file1" required>
+      </div>
+      <div>
+        <label for="file2" class="file-upload">Upload Badge Identification:</label>
+        <input type="file" id="file2" name="file2" required>
+      </div>
+      <div>
+        <label for="file3" class="file-upload">Upload Case File Cover Sheet:</label>
+        <input type="file" id="file3" name="file3" required>
+      </div>
+      <div>
+        <label for="file4" class="file-upload">Upload Additional Supporting Documents:</label>
+        <input type="file" id="file4" name="file4">
+      </div>
+      <div>
+        <label for="signature">Digital Signature:</label>
+        <canvas id="signaturePad" class="signature-pad"></canvas>
+        <button type="button" id="clearSignature">Clear Signature</button>
+      </div>
+      <button type="submit">Submit Request</button>
+    </form>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const canvas = document.getElementById('signaturePad');
+      const signaturePad = new SignaturePad(canvas);
+      
+      document.getElementById('clearSignature').addEventListener('click', function() {
+        signaturePad.clear();
+      });
+
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('emailError');
+
+      emailInput.addEventListener('input', function() {
+        if (this.validity.patternMismatch) {
+          emailError.textContent = 'Please enter a valid government email address ending with .gov';
+        } else {
+          emailError.textContent = '';
+        }
+      });
+
+      document.getElementById('lawEnforcementForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (signaturePad.isEmpty()) {
+          alert('Please provide a signature before submitting.');
+          return;
+        }
+
+        if (!emailInput.value.endsWith('.gov')) {
+          alert('Please enter a valid government email address ending with .gov');
+          return;
+        }
+
+        // Simulate form submission
+        alert('Form submitted successfully! Your law enforcement request has been received.');
+        
+        // In a real application, you would send this data to a server
+        const formData = new FormData(this);
+        formData.append('signature', signaturePad.toDataURL());
+
+        // Reset form and signature pad after submission
+        this.reset();
+        signaturePad.clear();
+      });
+    });
+  </script>
+</body>
+</html>
