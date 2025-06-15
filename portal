@@ -316,6 +316,7 @@
 
         <nav id="app-bottom-nav">
             <a href="#" class="nav-item active" data-screen="home-screen"><i class="material-icons">home</i><span>Home</span></a>
+            <a href="#" class="nav-item active" data-screen="event-screen"><i class="material-icons">Calendar</i><span>Event</span></a>
             <a href="#" class="nav-item" data-screen="live-screen"><i class="material-icons">sensors</i><span>Live</span></a>
             <a href="#" class="nav-item fab" data-screen="upload-screen"><i class="material-icons">add</i></a>
             <a href="#" class="nav-item" data-screen="cart-screen"><i class="material-icons-outlined">shopping_cart</i><span>Cart</span></a>
@@ -402,7 +403,7 @@
                             <li class="settings-item" id="app-logout-btn"><span>Logout</span><i class="material-icons-outlined">chevron_right</i></li>
                         </ul>
                     </div>`,
-                'live-screen': () => `<div class="screen"><h2>Live</h2><p>This feature is unavailable.</p></div>`,
+                'live-screen': () => `<div class="screen"><h2>Live</h2><p>This feature is not available at this time.</p></div>`,
                 'cart-screen': () => `<div class="screen"><h2>Cart</h2><p>This feature is unavailable.</p></div>`,
                 'unavailable-screen': () => `<div class="screen"><h2>Feature Unavailable</h2><p>This feature is currently under development. Check back later!</p></div>`
             };
