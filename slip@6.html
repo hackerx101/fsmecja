@@ -1,0 +1,539 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Fusion Stars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0a0a23;
+            --secondary-color: #1b1b32;
+            --font-color: #f5f6f7;
+            --accent-color: #d0d0d5;
+            --button-color: #feac32;
+            --button-hover-color: #ffbe5b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--primary-color);
+            color: var(--font-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Welcome Screen */
+        #welcome-screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #welcome-screen .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #welcome-screen h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        #welcome-screen p {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        #welcome-screen button {
+            background-color: var(--button-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+
+        #welcome-screen button:hover {
+            background-color: var(--button-hover-color);
+        }
+
+        .welcome-footer {
+            padding: 20px;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            text-align: center;
+        }
+
+        /* Dashboard Screen */
+        #dashboard-screen {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding-bottom: 80px; /* Space for bottom bar */
+        }
+        
+        .user-info {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        
+        .user-info h2 {
+            margin: 0 0 10px 0;
+        }
+        
+        .slip-id-container {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--primary-color);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        .slip-id-container .copy-tooltip {
+            visibility: hidden;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .slip-id-container:hover .copy-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .message-list {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .message-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--secondary-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .message-item:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .message-profile-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: grey;
+            flex-shrink: 0;
+        }
+
+        .message-details {
+            flex-grow: 1;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+        }
+        
+        .message-subject {
+            color: var(--accent-color);
+        }
+        
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            border-top: 1px solid #333;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--font-color);
+            text-decoration: none;
+            font-size: 0.75rem;
+        }
+        
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        /* Popups */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: var(--secondary-color);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .popup-content h3 {
+            margin-top: 0;
+        }
+
+        .popup-buttons button {
+            background-color: var(--button-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .popup-buttons button.archive {
+            background-color: #555;
+            color: var(--font-color);
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Settings Menu */
+        #settings-menu {
+            position: fixed;
+            bottom: 70px;
+            right: 10px;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            width: 200px;
+            display: none;
+            z-index: 1001;
+            overflow: hidden;
+        }
+        
+        #settings-menu a {
+            display: block;
+            padding: 12px 15px;
+            color: var(--font-color);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        #settings-menu a:hover {
+            background-color: #444;
+        }
+
+        @media (max-width: 600px) {
+            #settings-menu {
+                left: 5%;
+                right: 5%;
+                width: 90%;
+                bottom: 80px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div id="welcome-screen" class="container">
+        <div class="main-content">
+            <h1>Welcome, Jennifer Myles</h1>
+            <p>You have a new message</p>
+            <button id="agree-btn">Agree and continue</button>
+        </div>
+        <footer class="welcome-footer">
+            National Fusion Stars Middle Elite Combine
+        </footer>
+    </div>
+
+    <div id="dashboard-screen">
+        <div class="user-info">
+            <h2>Jennifer Miles</h2>
+            <div id="slip-id" class="slip-id-container" data-id="alb-2907-887-9960-67">
+                SLIP ID: alb-2907-887-9960-67
+                <span class="copy-tooltip">Double click to copy</span>
+            </div>
+        </div>
+
+        <div id="schedule-content" style="display: none; text-align: center; padding: 50px; font-size: 1.2rem;">
+            No schedules at this time
+        </div>
+
+        <div class="message-list">
+             <div class="message-item" id="partner-request-message">
+                <div class="message-profile-photo"></div>
+                <div class="message-details">
+                    <div class="message-sender">Ashawni Monteith</div>
+                    <div class="message-subject">Partner Request</div>
+                </div>
+            </div>
+            <div class="message-item">
+                <div class="message-profile-photo"></div>
+                <div class="message-details">
+                    <div class="message-sender">Combine Weekly</div>
+                    <div class="message-subject">Your weekly summary is here</div>
+                </div>
+            </div>
+            <div class="message-item">
+                <div class="message-profile-photo"></div>
+                <div class="message-details">
+                    <div class="message-sender">NFS Updates</div>
+                    <div class="message-subject">Important: Upcoming schedule change</div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="#" id="home-btn" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-video"></i><span>Live</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-comments"></i><span>Chat</span></a>
+            <a href="#" id="schedule-btn" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-calendar-check"></i><span>Events</span></a>
+            <a href="#" id="settings-btn" class="nav-item"><i class="fas fa-cog"></i><span>Setting</span></a>
+        </nav>
+        
+        <div id="settings-menu">
+            <a href="#" id="edit-profile-btn">Edit Profile</a>
+            <a href="#" id="enable-notification-btn">Enable Web Notification</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <div id="message-popup" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <h3>Subject: Partner Request</h3>
+            <p>Ashawni Monteith has sent you a partner request. Would you like to connect?</p>
+            <div class="popup-buttons">
+                <button id="mark-done-btn">Mark as done</button>
+                <button id="archive-btn" class="archive">Archive</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="edit-profile-popup" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <h3>Edit Profile</h3>
+            <form id="edit-profile-form" style="display: flex; flex-direction: column; align-items: center;">
+                <input type="text" id="name-input" placeholder="Enter new name" required style="width: 90%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid var(--accent-color); background-color: var(--primary-color); color: var(--font-color);">
+                <div class="popup-buttons">
+                    <button type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const agreeBtn = document.getElementById('agree-btn');
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const dashboardScreen = document.getElementById('dashboard-screen');
+            const slipIdEl = document.getElementById('slip-id');
+            const partnerMessage = document.getElementById('partner-request-message');
+            const messagePopup = document.getElementById('message-popup');
+            const closePopupBtn = messagePopup.querySelector('.close-popup');
+            const markDoneBtn = document.getElementById('mark-done-btn');
+            const archiveBtn = document.getElementById('archive-btn');
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsMenu = document.getElementById('settings-menu');
+
+            // New elements
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+            const editProfilePopup = document.getElementById('edit-profile-popup');
+            const closeEditProfilePopupBtn = editProfilePopup.querySelector('.close-popup');
+            const editProfileForm = document.getElementById('edit-profile-form');
+            const nameInput = document.getElementById('name-input');
+            const userNameDisplay = document.querySelector('#dashboard-screen .user-info h2');
+            const welcomeHeader = document.querySelector('#welcome-screen h1');
+            
+            const enableNotificationBtn = document.getElementById('enable-notification-btn');
+            
+            const homeBtn = document.getElementById('home-btn');
+            const scheduleBtn = document.getElementById('schedule-btn');
+            const messageList = document.querySelector('.message-list');
+            const scheduleContent = document.getElementById('schedule-content');
+            const userInfo = document.querySelector('.user-info');
+
+
+            // Show dashboard
+            agreeBtn.addEventListener('click', () => {
+                welcomeScreen.style.display = 'none';
+                dashboardScreen.style.display = 'block';
+            });
+
+            // Copy SLIP ID
+            slipIdEl.addEventListener('dblclick', () => {
+                const id = slipIdEl.getAttribute('data-id');
+                navigator.clipboard.writeText(id).then(() => {
+                    const tooltip = slipIdEl.querySelector('.copy-tooltip');
+                    tooltip.textContent = 'Copied!';
+                    setTimeout(() => {
+                        tooltip.textContent = 'Double click to copy';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            });
+
+            // Show AAU partner letter for Ashawni's message
+            partnerMessage.addEventListener('click', () => {
+                window.open('NFSMEC_AAU_Partnership_Letter-1.pdf', '_blank');
+            });
+
+            // Close message popup logic (can be used for other messages)
+            const closeThePopup = () => {
+                messagePopup.style.display = 'none';
+            }
+            closePopupBtn.addEventListener('click', closeThePopup);
+            markDoneBtn.addEventListener('click', closeThePopup);
+            archiveBtn.addEventListener('click', closeThePopup);
+            messagePopup.addEventListener('click', (e) => {
+                if (e.target === messagePopup) {
+                    closeThePopup();
+                }
+            });
+            
+            // Toggle Settings Menu
+            settingsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent the document click from firing immediately
+                settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close settings menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!settingsMenu.contains(e.target) && e.target !== settingsBtn && !settingsBtn.contains(e.target)) {
+                    settingsMenu.style.display = 'none';
+                }
+            });
+
+            // Settings Menu Actions
+            // Edit Profile
+            editProfileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                nameInput.value = userNameDisplay.textContent;
+                editProfilePopup.style.display = 'flex';
+                settingsMenu.style.display = 'none';
+            });
+
+            const closeEditPopup = () => {
+                editProfilePopup.style.display = 'none';
+            };
+            closeEditProfilePopupBtn.addEventListener('click', closeEditPopup);
+            editProfilePopup.addEventListener('click', (e) => {
+                if (e.target === editProfilePopup) {
+                    closeEditPopup();
+                }
+            });
+
+            editProfileForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newName = nameInput.value.trim();
+                if (newName) {
+                    userNameDisplay.textContent = newName;
+                    welcomeHeader.textContent = `Welcome, ${newName}`;
+                    closeEditPopup();
+                }
+            });
+
+            // Enable Notifications
+            enableNotificationBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                settingsMenu.style.display = 'none';
+                if ('Notification' in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification('Great!', { body: 'You will now receive notifications.' });
+                        }
+                    });
+                } else {
+                    alert('This browser does not support desktop notifications.');
+                }
+            });
+
+            // Navigation
+            scheduleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                userInfo.style.display = 'none';
+                messageList.style.display = 'none';
+                scheduleContent.style.display = 'block';
+            });
+
+            homeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                scheduleContent.style.display = 'none';
+                userInfo.style.display = 'block';
+                messageList.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
