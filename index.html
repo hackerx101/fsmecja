@@ -1,0 +1,179 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFSMEC - National Fusion Stars Middle Elite Combine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div id="app-container">
+        <!-- Main Home Page -->
+        <div id="home-page" class="page active">
+            <header>
+                <div class="header-left">
+                    <h1>NFSMEC</h1>
+                </div>
+                <div class="header-right">
+                    <button id="recruit-btn" class="icon-button"><i class="fas fa-flag"></i></button>
+                    <button id="rewards-nav-btn" class="icon-button"><i class="fas fa-gift"></i></button>
+                    <button id="profile-btn" class="icon-button"><i class="fas fa-user-circle"></i></button>
+                </div>
+            </header>
+            <main class="home-main">
+                <div class="hero">
+                    <h2>National Fusion Stars Middle Elite Combine</h2>
+                    <p>Tech, Sports for Youth & Innovation in Sports AI</p>
+                    <div class="hero-buttons">
+                        <button id="learn-more-btn" class="game-button">
+                            <span>Learn More</span>
+                        </button>
+                        <button id="play-game-btn" class="game-button">
+                            <i class="fas fa-play"></i>&nbsp;<span>Play</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Rewards Page -->
+        <div id="rewards-page" class="page">
+            <header>
+                <button id="back-to-home-btn" class="icon-button"><i class="fas fa-arrow-left"></i></button>
+                <h2>Daily Rewards</h2>
+            </header>
+            <div id="rewards-grid"></div>
+        </div>
+
+        <!-- Game Page -->
+        <div id="game-page" class="page">
+            <header>
+                <button id="back-to-home-from-game-btn" class="icon-button"><i class="fas fa-arrow-left"></i></button>
+                <h2>Crack the Code - Multiplayer</h2>
+                <div id="player-list-container">
+                    <p>Players in room:</p>
+                    <ul id="player-list"></ul>
+                </div>
+            </header>
+            <main class="game-main">
+                <div id="game-setup">
+                    <h3>Join a Puzzle Room</h3>
+                    <p>Select a difficulty to join a room and play with others.</p>
+                    <div class="difficulty-options">
+                        <button class="game-button difficulty-btn" data-difficulty="easy">Easy</button>
+                        <button class="game-button difficulty-btn" data-difficulty="hard">Hard</button>
+                    </div>
+                </div>
+
+                <div id="game-content" style="display: none;">
+                    <div id="crack-the-code-container">
+                        <p id="code-prompt" class="code-prompt">Enter the passphrase:</p>
+                        <div class="code-input-container">
+                            <input type="text" id="code-input" placeholder="> _">
+                            <button id="submit-code-btn" class="game-button">Submit</button>
+                        </div>
+                        <p id="game-message"></p>
+                    </div>
+                    <div id="chat-container">
+                        <div id="chat-messages"></div>
+                        <input type="text" id="chat-input" placeholder="Type to chat...">
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="code-modal" class="modal-container">
+        <div class="modal-content">
+            <span class="close-btn" id="close-code-modal">&times;</span>
+            <h3>Homepage Source Code</h3>
+            <pre><code id="code-display" class="language-html"></code></pre>
+        </div>
+    </div>
+
+    <div id="login-modal" class="modal-container">
+        <div class="modal-content">
+            <span class="close-btn" id="close-login-modal">&times;</span>
+            <h3>Profile</h3>
+            <div id="profile-view">
+                 <p>UID: <span id="display-uid"></span> <button id="copy-uid-btn"><i class="fas fa-copy"></i></button></p>
+                 <p>Username: <span id="display-username"></span></p>
+                 <button id="add-friend-btn" class="game-button">Add Friend</button>
+                 <button id="logout-btn" class="game-button">Logout</button>
+            </div>
+            <div id="guest-login-view">
+                <p>Login to track your progress and claim rewards!</p>
+                <button id="guest-login-btn" class="game-button">Login as Guest</button>
+            </div>
+        </div>
+    </div>
+
+     <div id="username-modal" class="modal-container">
+        <div class="modal-content">
+            <h3>Set Your Username</h3>
+            <input type="text" id="username-input" placeholder="Enter username..." maxlength="15">
+            <button id="set-username-btn" class="game-button">Confirm</button>
+        </div>
+    </div>
+    
+    <div id="chest-animation-container">
+        <div id="chest"></div>
+    </div>
+
+    <div id="xp-reward-modal" class="modal-container">
+        <div class="modal-content reward-popup">
+            <span class="close-btn" id="close-xp-modal">&times;</span>
+            <h3>Reward Claimed!</h3>
+            <div class="xp-display-container">
+                <span class="xp-label">XP</span>
+                <span id="xp-amount"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="recruit-modal" class="modal-container">
+        <div class="modal-content">
+            <span class="close-btn" id="close-recruit-modal">&times;</span>
+            <h3>Recruit Players</h3>
+            <div class="recruit-options">
+                <div class="recruit-channel">
+                    <p>Channel:</p>
+                    <label><input type="radio" name="channel" value="guild" checked> Guild</label>
+                    <label><input type="radio" name="channel" value="world"> World Chat</label>
+                </div>
+                <div class="recruit-rank">
+                    <p>Minimum Rank:</p>
+                    <select id="rank-select">
+                        <option>Bronze</option>
+                        <option>Silver</option>
+                        <option>Gold</option>
+                        <option>Platinum</option>
+                        <option>Diamond</option>
+                        <option>Master</option>
+                        <option>Grandmaster</option>
+                    </select>
+                </div>
+            </div>
+            <button id="send-recruitment-btn" class="game-button">Send Recruitment</button>
+        </div>
+    </div>
+
+    <!-- Audio Control -->
+    <button id="music-toggle-btn" class="fab"><i class="fas fa-music"></i></button>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "main": "./main.js",
+            "auth": "./auth.js",
+            "rewards": "./rewards.js",
+            "audio": "./audio.js"
+        }
+    }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
